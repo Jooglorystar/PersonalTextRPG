@@ -76,6 +76,7 @@ namespace PersonalTextRPG
         public bool IsHave { get { return isHave; } set { isHave = value; } }
         public bool IsEquipped { get { return isEquipped; } set { isEquipped = value; } }
     }
+
     class Armor : IGameItem
     {
         string name;
@@ -157,6 +158,7 @@ namespace PersonalTextRPG
         Random random = new Random();
 
         int playerSelect = 0;
+        int itemSelect = 0;
 
         int weaponAttack = 0;
         int armorDefence = 0;
@@ -173,7 +175,8 @@ namespace PersonalTextRPG
             {
                 Console.Write("플레이어의 직업을 설정해주세요\n1. 성기사\n2. 사제\n>>");
                 PlayerSelectReset();
-                playerSelect = int.Parse(Console.ReadLine());
+                PlayerSelect();
+
                 switch (playerSelect)
                 {
                     case 1:
@@ -227,7 +230,7 @@ namespace PersonalTextRPG
                 Console.Write("어떤 행동을 할까?\n>>");
 
                 PlayerSelectReset();
-                playerSelect = int.Parse(Console.ReadLine());
+                PlayerSelect();
                 switch (playerSelect)
                 {
                     case 1:             // 던전 입장
@@ -275,7 +278,7 @@ namespace PersonalTextRPG
             Console.WriteLine("4. 마을로 돌아가기");
             Console.Write(">>");
             PlayerSelectReset();
-            playerSelect = int.Parse(Console.ReadLine());
+            PlayerSelect();
 
             int dungeonStatcut = 0;
             int dungeonDamage = 0;
@@ -392,8 +395,7 @@ namespace PersonalTextRPG
                 HaveArmorDraw();
                 Console.Write("어떤 행동을 할까요?\n1. 무기 장착 관리\n2. 방어구 장착 관리\n3. 돌아가기\n>>");
                 PlayerSelectReset();
-                playerSelect = int.Parse(Console.ReadLine());
-                int itemSelect = 0;
+                PlayerSelect();
                 switch (playerSelect)
                 {
                     case 1:
@@ -409,10 +411,15 @@ namespace PersonalTextRPG
                             }
                             Console.WriteLine($"{weaponInventory.IndexOf(weapon) + 1}. {weapon.Name}\t|공격력 \t+{weapon.ItemAttack}|{weapon.ItemInfo}");
                         }
-                        Console.Write("어떤 무기를 장착 할까요?\n>>");
+                        Console.Write("어떤 무기를 장착 할까요?(0 눌러 뒤로가기)\n>>");
 
                         itemSelect = 0;
-                        itemSelect = int.Parse(Console.ReadLine());
+                        ItemSelect();
+
+                        if(itemSelect == 0)
+                        {
+                            break;
+                        }
 
                         if (itemSelect - 1 < weaponInventory.Count())
                         {
@@ -471,10 +478,15 @@ namespace PersonalTextRPG
                             }
                             Console.WriteLine($"{armorInventory.IndexOf(armor) + 1}. {armor.Name}\t|공격력 \t+{armor.ItemDefence}|{armor.ItemInfo}");
                         }
-                        Console.WriteLine("어떤 방어구를 장착 할까요?");
+                        Console.Write("어떤 방어구를 장착 할까요?(0 눌러 뒤로가기)\n>>");
 
                         itemSelect = 0;
-                        itemSelect = int.Parse(Console.ReadLine());
+                        ItemSelect();
+
+                        if (itemSelect == 0)
+                        {
+                            break;
+                        }
 
                         if (itemSelect - 1 < armorInventory.Count())
                         {
@@ -554,9 +566,10 @@ namespace PersonalTextRPG
 
         void TownShop()
         {
+            Console.WriteLine("상점입니다. 어서오세요.\n");
+
             do
             {
-                Console.WriteLine("상점입니다. 어서오세요.\n");
 
                 Console.WriteLine($"[보유 금액]\n{player.Money} G\n");
 
@@ -570,7 +583,7 @@ namespace PersonalTextRPG
                     "\n4. 마을로 돌아가기" +
                     "\n>>");
                 PlayerSelectReset();
-                playerSelect = int.Parse(Console.ReadLine());
+                PlayerSelect();
                 switch (playerSelect)
                 {
                     case 1:
@@ -627,7 +640,7 @@ namespace PersonalTextRPG
                         $"\n4. 구입하지 않음" +
                         $"\n>>");
                     PlayerSelectReset();
-                    playerSelect = int.Parse(Console.ReadLine());
+                    PlayerSelect();
                     switch (playerSelect)
                     {
                         case 1:
@@ -690,7 +703,7 @@ namespace PersonalTextRPG
                 {
                     Console.Write($"어떤 아이템을 구입할까?\n\n1. {armors[1].Name}\n2. {armors[2].Name}\n3. {armors[3].Name}\n4. 구입하지 않음\n>>");
                     PlayerSelectReset();
-                    playerSelect = int.Parse(Console.ReadLine());
+                    PlayerSelect();
                     switch (playerSelect)
                     {
                         case 1:
@@ -733,9 +746,8 @@ namespace PersonalTextRPG
 
                 Console.Write("어떤 행동을 할까요?\n1. 무기 판매\n2. 방어구 판매\n3. 돌아가기\n>>");
                 PlayerSelectReset();
-                playerSelect = int.Parse(Console.ReadLine());
+                PlayerSelect();
 
-                int itemSelect = 0;
                 switch (playerSelect)
                 {
                     case 1:
@@ -754,7 +766,7 @@ namespace PersonalTextRPG
                         Console.Write("어떤 무기를 판매 할까요?\n>>");
 
                         itemSelect = 0;
-                        itemSelect = int.Parse(Console.ReadLine());
+                        ItemSelect();
 
                         if (itemSelect - 1 < weaponInventory.Count())
                         {
@@ -795,7 +807,7 @@ namespace PersonalTextRPG
                         Console.Write("어떤 방어구를 판매 할까요?\n>>");
 
                         itemSelect = 0;
-                        itemSelect = int.Parse(Console.ReadLine());
+                        ItemSelect();
 
                         if (itemSelect - 1 < armorInventory.Count())
                         {
@@ -841,7 +853,7 @@ namespace PersonalTextRPG
                 {
                     Console.Write("\n휴식하시겠습니까?\n1. 예\n2. 아니오\n>>");
                     PlayerSelectReset();
-                    playerSelect = int.Parse(Console.ReadLine());
+                    PlayerSelect();
                     switch (playerSelect)
                     {
                         case 1:
@@ -869,6 +881,30 @@ namespace PersonalTextRPG
         void PlayerSelectReset()
         {
             playerSelect = 0;
+        }
+
+        void PlayerSelect()
+        {
+            try
+            {
+                playerSelect = int.Parse(Console.ReadLine());
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        void ItemSelect()
+        {
+            try
+            {
+                itemSelect = int.Parse(Console.ReadLine());
+            }
+            catch (Exception) 
+            {
+
+            }
         }
 
         void HaveWeaponDraw()
