@@ -217,11 +217,15 @@ namespace PersonalTextRPG
                     if (player.PlayerExp >= player.Level)
                     {
                         Console.WriteLine("레벨업!");
+
                         player.Level += 1;
                         player.Defence += 1;
                         player.Attack += 0.5f;
 
                         player.PlayerExp = 0;
+
+                        Console.WriteLine("스탯이 증가합니다.");
+                        Thread.Sleep(1000);
                     }
                 }
 
@@ -353,13 +357,22 @@ namespace PersonalTextRPG
             {
                 float totalAttack = player.Attack + weaponAttack;
 
+                Console.Write("\n던전 도는 중");
+                for (int i = 0; i < 5; i++)
+                {
+                    Thread.Sleep(300);
+                    Console.Write(".");
+                }
+                Console.WriteLine();
+
                 if (isClear)
                 {
+                    Thread.Sleep(1000);
                     additionalReward = ((float)random.Next((int)(totalAttack), (int)(totalAttack * 2)) / 100);
                     additionalReward = (float)dungeonReward * additionalReward;
                     dungeonReward += (int)additionalReward;
 
-                    Console.WriteLine("던전 클리어!\n\n");
+                    Console.WriteLine("\n\n===던전 클리어!===\n\n");
 
                     randomCheck = random.Next(20, 36);
                     dungeonDamage += randomCheck;
@@ -369,17 +382,20 @@ namespace PersonalTextRPG
 
                     int playerMoneyTemp = player.Money;
                     player.Money += dungeonReward;
+                    Thread.Sleep(1000);
                     Console.WriteLine("===[탐험 결과]===\n");
                     Console.WriteLine($"체력: {playerHealthTemp} -> {player.Health}");
                     Console.WriteLine($"소지금: {playerMoneyTemp} -> {player.Money}");
-                    Console.WriteLine("=================\n");
+                    Console.WriteLine("\n=================\n");
                     player.PlayerExp++;
                 }
                 else
                 {
+                    Thread.Sleep(1000);
                     Console.WriteLine("던전 클리어 실패...");
                     player.Health -= (player.MaxHealth / 2);
                 }
+                Thread.Sleep(1000);
             }
         }
 
@@ -903,7 +919,7 @@ namespace PersonalTextRPG
             }
             catch (Exception) 
             {
-
+                ItemSelect();
             }
         }
 
