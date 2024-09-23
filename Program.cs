@@ -4,6 +4,7 @@ namespace PersonalTextRPG
 {
     class Player
     {
+        // this is branch practice
         string name;
         string charClass = "디폴트직업";
         int level = 1;
